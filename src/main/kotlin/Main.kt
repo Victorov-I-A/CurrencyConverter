@@ -8,14 +8,24 @@ const val CURRENCY_LINK = "https://api.coingate.com/v2/rates/merchant/EUR/USD"
 
 fun main() {
     val ratio: Double
-    val url = URL(CURRENCY_LINK)
-    val connection = url.openConnection() as HttpURLConnection
-    connection.requestMethod = "GET"
-    connection.useCaches = false
-    connection.connect()
-    ratio = connection.inputStream.bufferedReader().use(BufferedReader::readText).toDouble()
+    try {
+        val url = URL(CURRENCY_LINK)
+        val connection = url.openConnection() as HttpURLConnection
+        connection.requestMethod = "GET"
+        connection.useCaches = false
+        connection.connect()
+        ratio = connection.inputStream.bufferedReader().use(BufferedReader::readText).toDouble()
+    } catch (e: Exception) {
+        print("Ops! Problems with network service.")
+        exitProcess(1)
+    }
     println("USD -> EUR\nWrite the amount of us dollars:")
-    val number = readLine()!!.toDouble()
-    println(String.format("%.2f euro", number * ratio))
-    exitProcess(0)
+    try {
+        val number = readLine()!!.toDouble()
+        println(String.format("%.2f euro", number * ratio))
+        exitProcess(0)
+    } catch (e: NumberFormatException) {
+        print("Wrong format of input")
+        exitProcess(1)
+    }
 }

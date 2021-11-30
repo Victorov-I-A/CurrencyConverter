@@ -19,13 +19,20 @@ fun main() {
         print("Ops! Problems with network service.")
         exitProcess(1)
     }
-    println("USD -> EUR\nWrite the amount of us dollars:")
-    try {
-        val number = readLine()!!.toDouble()
-        println(String.format("%.2f euro", number * ratio))
-        exitProcess(0)
-    } catch (e: NumberFormatException) {
-        print("Wrong format of input")
-        exitProcess(1)
+    println("USD -> EUR\nWrite the amount of us dollars or write \"exit\" to leave the converter:")
+    while (true) {
+        val input = readLine()
+        if (input == "exit") {
+            print("Exit from converter...")
+            break
+        }
+        try {
+            val number = input!!.toDouble()
+            println(String.format("%.2f euro", number * ratio))
+        } catch (e: NumberFormatException) {
+            print("Wrong format of input")
+            exitProcess(1)
+        }
     }
+    exitProcess(0)
 }

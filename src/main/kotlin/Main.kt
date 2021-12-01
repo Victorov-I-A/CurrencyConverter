@@ -6,7 +6,7 @@ import kotlin.system.exitProcess
 
 const val CURRENCY_LINK = "https://api.coingate.com/v2/rates/merchant/EUR/USD"
 
-fun main() {
+fun main(args: Array<String>) {
     val ratio: Double
     try {
         val url = URL(CURRENCY_LINK)
@@ -16,21 +16,21 @@ fun main() {
         connection.connect()
         ratio = connection.inputStream.bufferedReader().use(BufferedReader::readText).toDouble()
     } catch (e: Exception) {
-        print("Ops! Problems with network service.")
+        println("Ops! Problems with network service.")
         exitProcess(1)
     }
     println("USD -> EUR\nWrite the amount of us dollars or write \"exit\" to leave the converter:")
     while (true) {
         val input = readLine()
         if (input == "exit") {
-            print("Exit from converter...")
+            println("Exit from converter...")
             break
         }
         try {
             val number = input!!.toDouble()
             println(String.format("%.2f euro", number * ratio))
         } catch (e: NumberFormatException) {
-            print("Wrong format of input")
+            println("Wrong format of input.")
             exitProcess(1)
         }
     }

@@ -31,8 +31,10 @@ application {
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
-        attributes 'Main-Class': 'MainKt'
+        attributes 'Main-Class': mainClassName
     }
+    from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     destinationDirectory.set(file("$projectDir/build"))
 }
